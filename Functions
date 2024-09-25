@@ -1,0 +1,120 @@
+#include <iostream>
+#include <string.h>
+#include <iomanip>
+#include "Header.h"
+
+using namespace std;
+// 1
+FILE* Oporcrfile(char name[]) {
+	FILE* file;
+	char namefile[30];
+	cout << "Input the name of file:" << endl;
+	cin >> namefile;
+	strcpy(name, namefile);
+	if (file = fopen(namefile, "rb")) {
+		cout << "The file \"" << namefile << "\" is open" << endl;
+	}
+	else {
+		file = fopen(namefile, "wb");
+		cout << "The file \"" << namefile << "\" is created" << endl;
+	}
+	fclose(file);
+	file = fopen(namefile, "a+b");
+	return file;
+}
+
+//print everything
+void Print(FILE* (&file), char namefile[]) {
+    Element* buffer = new Element;
+    rewind(file);
+	cout << "Content of the file " << namefile << " :" << endl;
+	cout << "--------------------------------------" << endl;
+    cout << "|  Name  | Weight |       Type       |" << endl;
+    cout << "--------------------------------------" << endl;
+    while (fread(buffer, sizeof(Element), 1, file) > 0) { 
+		cout << "|" << setw(5) << right << buffer->name << "   |";
+		cout << setw(5) << right << buffer->atomnum << "   |";
+		cout << "  " << setw(13) << right << buffer->type << "   |" << endl;
+    }
+	cout << "--------------------------------------" << endl;
+    delete buffer; 
+}
+
+//2
+void Addinf(FILE* (&file)) {
+	Element* elem = new Element;
+	char buffer[15];
+
+	cout << "name of new element: ";
+	cin >> buffer;
+	strcpy(elem->name, buffer);
+
+	cout << "atomic weight of element: ";
+	cin >> elem->atomnum;
+
+	cout << "type: ";
+	cin >> buffer;
+	strcpy(elem->type, buffer);
+
+	fwrite(elem, sizeof(Element), 1, file);
+	delete elem;
+}
+//3
+void PrintSem(FILE* (&file)) {
+	char sem[] = "Semiconductor";
+	int flag = 0;
+	Element* buffer = new Element;
+	rewind(file);
+	cout << "Semiconductors:" << endl;
+	cout << "--------------------------------------------------------" << endl;
+	while (fread(buffer, sizeof(Element), 1, file) > 0) {
+		for (int i = 0; i < 13; i++) {
+			if (buffer->type[i] != sem[i])
+				flag = 1;
+		}
+		if (flag == 0)
+			cout << "Name: " << buffer->name << " | Weight: " << buffer->atomnum << endl;
+		flag = 0;
+	}
+	cout << "--------------------------------------------------------" << endl;
+}
+//4
+void PrintCon(FILE* (&file)) {
+	char con[] = "Conductor";
+	int flag = 0;
+	Element* buffer = new Element;
+	rewind(file);
+	cout << "Conductors:" << endl;
+	cout << "--------------------------------------------------------" << endl;
+	while (fread(buffer, sizeof(Element), 1, file) > 0) {
+		for (int i = 0; i < 9; i++) {
+			if (buffer->type[i] != con[i])
+				flag = 1;
+		}
+		if (flag == 0) 
+			cout << "Name: " << buffer->name << " | Weight: " << buffer->atomnum << endl;
+		flag = 0;
+	}
+	cout << "--------------------------------------------------------" << endl;
+}
+//5
+void PrintsomeIns(FILE* (&file)) {
+	rewind(file);
+	char ins[] = "Insulator";
+	int minweight, flag = 0;
+	Element* buffer = new Element;
+	cout << "Input a minimum weight of the Insulators: ";
+	cin >> minweight;
+	cout << "Necessary Insulators:" << endl;
+	cout << "--------------------------------------------------------" << endl;
+	while (fread(buffer, sizeof(Element), 1, file) > 0) {
+		for (int i = 0; i < 9; i++) {
+			if (buffer->type[i] != ins[i])
+				flag = 1;
+		}
+		if (flag == 0 && buffer->atomnum >= minweight)
+			cout << "Name: " << buffer->name << " | Weight: " << buffer->atomnum << endl;
+		flag = 0;
+	}
+	cout << "--------------------------------------------------------" << endl;
+}
