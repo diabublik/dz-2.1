@@ -1,0 +1,48 @@
+#include <iostream>
+#include "Header.h"
+
+using namespace std;
+
+int main() {
+	FILE* file = NULL;
+	char namefile[30];
+	int choice = -1;
+	file = Oporcrfile(namefile);
+	Print(file, namefile);
+	while (choice != 0) {
+		cout << "Choice the function:" << endl;
+		cout << "=======================================================================" << endl;
+		cout << "1 - Open or create a bin file" << endl;
+		cout << "2 - Add new element" << endl;
+		cout << "3 - Print the names and atomic weights of semiconductor" << endl;
+		cout << "4 - Print the data of conductors" << endl;
+		cout << "5 - Print the names of insulators which weights are smaller some number" << endl;
+		cout << "6 - Delete the file" << endl;
+		cout << "0 - Close the programm" << endl;
+		cout << "=======================================================================" << endl;
+		cout << "Your choice: ";
+		cin >> choice;
+		switch (choice) {
+		case 1:
+			file = Oporcrfile(namefile);
+			Print(file, namefile);
+			break;
+		case 2:
+			Addinf(file);
+			Print(file, namefile);
+			break;
+		case 3:
+			PrintSem(file); break;
+		case 4:
+			PrintCon(file); break;
+		case 5:
+			PrintsomeIns(file); break;
+		case 6:
+			fclose(file);
+			remove(namefile);
+			cout << "File \"" << namefile << "\" is deleted" << endl;
+		case 0: break;
+		default: cout << "The unknown command" << endl;
+		}
+	}
+}
