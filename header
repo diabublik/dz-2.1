@@ -1,0 +1,12 @@
+struct Element {
+	char name[5];
+	int atomnum;
+	char type[14];
+};
+
+FILE* Oporcrfile(char name[]);
+void Print(FILE* (&file), char namefile[]);
+void Addinf(FILE* (&file));
+void PrintSem(FILE* (&file));
+void PrintCon(FILE* (&file));
+void PrintsomeIns(FILE* (&file));
